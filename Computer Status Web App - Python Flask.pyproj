@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cd4848d4-1c16-48f5-bad9-940ae69fecc9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Computer_Status_Web_App___Python_Flask.py</StartupFile>
+    <StartupFile>app.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Computer_Status_Web_App___Python_Flask.py" />
+    <Compile Include="app.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\" />
