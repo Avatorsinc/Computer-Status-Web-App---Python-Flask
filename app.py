@@ -8,12 +8,33 @@ from datetime import datetime
 import os
 import threading
 
+# Compute the absolute path to this file's directory
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+# Point the DB at an absolute path so Gunicorn always finds the same file
+DATABASE = os.path.join(BASE_DIR, 'computers.db')
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
 
 # Database configuration
-DATABASE = 'computers.db'
 DATABASE_LOCK = threading.Lock()
+_db_initialized = False
+
+def ensure_db():
+    """Make sure the database exists and is seeded before serving any traffic."""
+    global _db_initialized
+    if not _db_initialized:
+        with DATABASE_LOCK:
+            if not _db_initialized:  # Double-check pattern
+                print(f"📊 Initializing database at: {DATABASE}")
+                init_database()
+                _db_initialized = True
+                print("✅ Database initialized!")
+
+@app.before_request
+def before_request():
+    """Ensure database is initialized before any request."""
+    ensure_db()
 
 def get_db():
     """Get database connection with proper configuration"""
@@ -408,12 +429,7 @@ def export_json():
 
 if __name__ == '__main__':
     print("🚀 Starting Computer Status Management System...")
-    print("📊 Initializing database...")
-    
-    # Initialize database
-    init_database()
-    
-    print("✅ Database ready!")
+    print(f"📊 Database path: {DATABASE}")
     print("🌐 Starting web server...")
     print("📍 Access your app at: http://localhost:5000")
     print("🔄 All changes are automatically saved to database!")
